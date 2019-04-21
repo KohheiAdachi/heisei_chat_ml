@@ -63,18 +63,20 @@ def sim_word_pkebell(word):
         if max_sim < sim:
             max_sim = sim
             max_sim_word = text
-    return max_sim_word,pkebell_dic[max_sim_word]
+    return similarity,max_sim_word,pkebell_dic[max_sim_word]
 
 
-def text_to_pkebell(text):
+def text_to_pkebell(text,threshold=0.5):
     sentense = re.findall(r'[^。]+(?:[。]|$)',text)
     pkebell_words = []
     pkebell_numbers = []
     for se in sentense:
         words_list = tokenize(se)
         for word in words_list:
-            pkebell_word,pkebell_number = sim_word_pkebell(word)
-            pkebell_words.append(pkebell_word)
-            pkebell_numbers.append(pkebell_number)
+            similarity,pkebell_word,pkebell_number = sim_word_pkebell(word)
+            
+            if similarity > threshold:
+                pkebell_words.append(pkebell_word)
+                pkebell_numbers.append(pkebell_number)
     
     return pkebell_words,pkebell_numbers
