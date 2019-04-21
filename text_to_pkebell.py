@@ -47,23 +47,30 @@ def get_vector(text):
     
     return sum_vec / word_count
 
+def get_vector_using_model(word):
+    try:
+        vector = model[word]
+    except:
+        vector = np.zeros(200)
+    return vector
+
 def cos_sim(v1,v2):
     return np.dot(v1,v2)/(np.linalg.norm(v1) * np.linalg.norm(v2))
 
 def sim_word_pkebell(word):
     max_sim = 0
     max_sim_word = ""
-    v1 = get_vector(word)
+    v1 = get_vector_using_model(word)
     for text in pkebell_dic:
         try:
-            v2 = get_vector(text)
+            v2 = get_vector_using_model(text)
             sim = cos_sim(v1,v2)
         except:
             sim = 0
         if max_sim < sim:
             max_sim = sim
             max_sim_word = text
-    return similarity,max_sim_word,pkebell_dic[max_sim_word]
+    return max_sim,max_sim_word,pkebell_dic[max_sim_word]
 
 
 def text_to_pkebell(text,threshold=0.5):
@@ -73,10 +80,12 @@ def text_to_pkebell(text,threshold=0.5):
     for se in sentense:
         words_list = tokenize(se)
         for word in words_list:
-            similarity,pkebell_word,pkebell_number = sim_word_pkebell(word)
-            
-            if similarity > threshold:
-                pkebell_words.append(pkebell_word)
-                pkebell_numbers.append(pkebell_number)
-    
+            try:
+                similarity,pkebell_word,pkebell_number = sim_word_pkebell(word)
+                if similarity > threshold:
+                    pkebell_words.append(pkebell_word)
+                    pkebell_numbers.append(pkebell_number)
+            except:
+                pass
+                
     return pkebell_words,pkebell_numbers
