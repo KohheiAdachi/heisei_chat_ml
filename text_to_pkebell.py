@@ -5,9 +5,22 @@ import MeCab
 import numpy as np
 import re
 from const import pkebell_dic
+import json
+import os
+from glob import glob
+
 # モデルの読み込み
 model_dir = "entity_vector.model.bin"
 model = KeyedVectors.load_word2vec_format(model_dir,binary=True)
+
+# emojiの読み込み
+emoji_dir = "../emoji-ja/data/emoji_ja.json"
+emoji_json_file = open(emoji_dir,"r")
+emoji_json = json.load(emoji_json_file)
+
+# imode_emojiの読み込み
+imode_emoji_path = glob("../emoji_to_imode_emoji/imode_emoji_data/*")
+
 
 def tokenize(doc):
     mecab = MeCab.Tagger("-Ochasen")
@@ -89,3 +102,26 @@ def text_to_pkebell(text,threshold=0.5):
                 pass
                 
     return pkebell_words,pkebell_numbers
+
+def emoji_to_imode_emoji(emoji):
+    max_simi_rate = 0
+    max_simi_word = ""
+    emoji = emoji_json[emoji]["keywords"]
+    emoji_vecter = model.most_similar(emoji[0])
+    print(emoji_vecter)
+    for imode_emoji in imode_emoji_path:
+        print(imode_emoji)
+        imode_emoji_text = os.path.splitext(os.path.basename(imode_emoji))
+        print(emoji[0],imode_emoji)
+        simi = model.similarity(emoji[0],imode_emoji_text[0])
+        print(simi)
+        if simi > max_simi_rate:
+            max_simi_rate = simi
+            max_simi_word = imode_emoji_text[0]
+    return max_simi_rate,max_simi_word
+        
+    # emoji_list = []
+    # try:
+    #     simi_vector = model.most_similar(emoji_list)
+    # except:
+    #     emoji_list.pop(-1)
