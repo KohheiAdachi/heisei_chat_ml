@@ -9,6 +9,7 @@ import json
 import os
 from glob import glob
 
+from .const import pkebell_dic
 # モデルの読み込み
 model_dir = "entity_vector.model.bin"
 model = KeyedVectors.load_word2vec_format(model_dir,binary=True)
