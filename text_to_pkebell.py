@@ -109,7 +109,6 @@ def text_to_pkebell(text,threshold=0.5):
 
 def emoji_to_vector(word_list,word_i=0):
     if  word_i > 10:
-        print(word_list)
         return np.zeros(200)    
     try:
         vector = model.wv[word_list[word_i]]
@@ -123,8 +122,17 @@ def imode_emoji_to_vector(text):
     try:
         imode_emoji_vector = model.wv[text]
     except:
+        imode_emoji_vector = imode_emoji_to_vector2(tokenize(text))
+    return imode_emoji_vector
+
+# iモード絵文字からベクトル２回目
+def imode_emoji_to_vector2(text):  
+    try:
+        imode_emoji_vector = model.wv[text]
+    except:
         imode_emoji_vector = np.zeros(200)
     return imode_emoji_vector
+
 
 def emoji_to_text_lists(emoji):
     text_lists = emoji_json[emoji]["keywords"]
