@@ -4,12 +4,15 @@ from gensim.models import KeyedVectors
 import MeCab
 import numpy as np
 import re
+# from .const import pkebell_dic
+# テスト用
 from const import pkebell_dic
 import json
 import os
 from glob import glob
 
-from .const import pkebell_dic
+from const import pkebell_dic
+
 # モデルの読み込み
 model_dir = "entity_vector.model.bin"
 model = KeyedVectors.load_word2vec_format(model_dir,binary=True)
@@ -140,4 +143,4 @@ def emoji_to_imode_emoji(emoji):
             max_simi_rate = simi_rate
             max_simi_word = imode_emoji_name
     
-    return imode_emoji_name
+    return max_simi_word

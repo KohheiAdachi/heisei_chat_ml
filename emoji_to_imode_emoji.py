@@ -10,6 +10,7 @@ model_dir = "entity_vector.model.bin"
 
 model = KeyedVectors.load_word2vec_format(model_dir,binary=True)
 
+# emojiのjsonファイルの読み込み
 emoji_json_file = open("../emoji-ja/data/emoji_ja.json","r")
 emoji_json = json.load(emoji_json_file)
 
