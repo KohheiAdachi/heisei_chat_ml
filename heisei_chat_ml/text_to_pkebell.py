@@ -4,14 +4,11 @@ from gensim.models import KeyedVectors
 import MeCab
 import numpy as np
 import re
-from .const import pkebell_dic
-# テスト用
-# from const import pkebell_dic
 import json
 import os
 from glob import glob
 
-from const import pkebell_dic
+from .const import pkebell_dic
 
 # モデルの読み込み
 model_dir = "entity_vector.model.bin"

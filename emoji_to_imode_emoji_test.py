@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 
-import text_to_pkebell as pkebell
+from heisei_chat_ml import text_to_pkebell as pkebell
 import json
 import csv
 
