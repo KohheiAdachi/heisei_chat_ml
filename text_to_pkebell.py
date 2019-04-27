@@ -20,7 +20,7 @@ emoji_json_file = open(emoji_dir,"r")
 emoji_json = json.load(emoji_json_file)
 
 # imode_emojiの読み込み
-imode_emoji_path = glob("../emoji_to_imode_emoji/imode_emoji_data/*")
+imode_emoji_paths = glob("../emoji_to_imode_emoji/imode_emoji_data/*")
 
 
 def tokenize(doc):
@@ -104,25 +104,40 @@ def text_to_pkebell(text,threshold=0.5):
                 
     return pkebell_words,pkebell_numbers
 
+def emoji_to_vector(word_list,word_i=0):
+    if  word_i > 10:
+        print(word_list)
+        return np.zeros(200)    
+    try:
+        vector = model.wv[word_list[word_i]]
+    except:
+        word_i = word_i + 1
+        vector = emoji_to_vector(word_list,word_i)
+    return vector
+
+# TODO:エラー時に，一時形態素解析を加える
+def imode_emoji_to_vector(text):  
+    try:
+        imode_emoji_vector = model.wv[text]
+    except:
+        imode_emoji_vector = np.zeros(200)
+    return imode_emoji_vector
+
+def emoji_to_text_lists(emoji):
+    text_lists = emoji_json[emoji]["keywords"]
+    return text_lists
+
 def emoji_to_imode_emoji(emoji):
     max_simi_rate = 0
     max_simi_word = ""
-    emoji = emoji_json[emoji]["keywords"]
-    emoji_vecter = model.most_similar(emoji[0])
-    print(emoji_vecter)
-    for imode_emoji in imode_emoji_path:
-        print(imode_emoji)
-        imode_emoji_text = os.path.splitext(os.path.basename(imode_emoji))
-        print(emoji[0],imode_emoji)
-        simi = model.similarity(emoji[0],imode_emoji_text[0])
-        print(simi)
-        if simi > max_simi_rate:
-            max_simi_rate = simi
-            max_simi_word = imode_emoji_text[0]
-    return max_simi_rate,max_simi_word
-        
-    # emoji_list = []
-    # try:
-    #     simi_vector = model.most_similar(emoji_list)
-    # except:
-    #     emoji_list.pop(-1)
+    emoji_vector = emoji_to_vector(emoji_to_text_lists(emoji))
+
+    for imode_emoji_file_path in imode_emoji_paths:
+        imode_emoji_name = os.path.splitext(os.path.basename(imode_emoji_file_path))[0]
+        imode_emoji_vector = emoji_to_vector(imode_emoji_name)        
+        simi_rate = cos_sim(emoji_vector,imode_emoji_vector)
+        if max_simi_rate < simi_rate:
+            max_simi_rate = simi_rate
+            max_simi_word = imode_emoji_name
+    
+    return imode_emoji_name
