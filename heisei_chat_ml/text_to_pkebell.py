@@ -15,12 +15,12 @@ model_dir = "entity_vector.model.bin"
 model = KeyedVectors.load_word2vec_format(model_dir,binary=True)
 
 # emojiの読み込み
-emoji_dir = "../emoji-ja/data/emoji_ja.json"
+emoji_dir = os.path.dirname(__file__) + "/../emoji-ja/data/emoji_ja.json"
 emoji_json_file = open(emoji_dir,"r")
 emoji_json = json.load(emoji_json_file)
 
 # imode_emojiの読み込み
-imode_emoji_paths = glob("../emoji_to_imode_emoji/imode_emoji_data/*")
+imode_emoji_paths = glob("imode_emoji_data/*")
 
 
 def tokenize(doc):
