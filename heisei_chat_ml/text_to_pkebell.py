@@ -139,7 +139,7 @@ def pre_preccesing():
 
     pre_proccesing_lists = ["モバQ"]
 
-    return pre_preccesing_lists
+    return pre_proccesing_lists
 
 
 
