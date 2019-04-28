@@ -135,13 +135,30 @@ def emoji_to_text_lists(emoji):
     text_lists = emoji_json[emoji]["keywords"]
     return text_lists
 
+def pre_preccesing():
+
+    pre_proccesing_lists = ["モバQ"]
+
+    return pre_preccesing_lists
+
+
+
 def emoji_to_imode_emoji(emoji):
     max_simi_rate = 0
     max_simi_word = ""
     emoji_vector = emoji_to_vector(emoji_to_text_lists(emoji))
 
+    imode_emoji_lists = []
+    # ファイルパスから名前だけのリストを作成する
     for imode_emoji_file_path in imode_emoji_paths:
-        imode_emoji_name = os.path.splitext(os.path.basename(imode_emoji_file_path))[0]
+        imode_emoji_lists.append(os.path.splitext(os.path.basename(imode_emoji_file_path))[0])
+
+    remove_lists = pre_preccesing()
+    
+    for remove_name in remove_lists:
+        imode_emoji_lists.remove(remove_name)
+
+    for imode_emoji_name in imode_emoji_lists:
         imode_emoji_vector = emoji_to_vector(imode_emoji_name)        
         simi_rate = cos_sim(emoji_vector,imode_emoji_vector)
         if max_simi_rate < simi_rate:
