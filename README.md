@@ -95,3 +95,8 @@ print(imode_emoji)
 iモード絵文字の画像ファイル名は
 
 `imode_emoji + ".png"`になってます．
+
+```python
+# emojiとimode_emojiの対応
+emojis,imode_emojis = pkebell.get_emoji_to_imode_emoji()
+```
