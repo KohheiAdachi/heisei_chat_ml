@@ -7,7 +7,7 @@ import re
 import json
 import os
 from glob import glob
-
+import emoji
 from .const import pkebell_dic
 
 # モデルの読み込み
@@ -148,4 +148,22 @@ def emoji_to_imode_emoji(emoji):
             max_simi_rate = simi_rate
             max_simi_word = imode_emoji_name
     
-    return max_simi_word
+    return max_simi_word + ".png"
+
+def emoji_text_to_imode_text(text):
+    for c in text:
+        if c in emoji.UNICODE_EMOJI:
+            imode_text = emoji_to_imode_emoji(c)
+            text = text.replace(c,"["+imode_text+"]")
+    
+    return text
+
+def get_emoji_to_imode_emoji():
+    emoji_lists = []
+    imode_emoji_lists = []
+    for emoji_str in emoji_json:
+        imode_emoji_name = emoji_to_imode_emoji(emoji_str)
+        emoji_lists.append(emoji_str)
+        imode_emoji_lists.append(imode_emoji_name)
+
+    return emoji_lists,imode_emoji_lists
