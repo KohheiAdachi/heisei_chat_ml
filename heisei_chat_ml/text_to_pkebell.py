@@ -115,15 +115,17 @@ def emoji_to_vector(word_list,word_i=0):
     return vector
 
 # TODO:エラー時に，一時形態素解析を加える
-def imode_emoji_to_vector(text):  
+def imode_emoji_to_vector(text): 
+    # imode_emoji_vector = imode_emoji_to_vector2(tokenize(text)) 
     try:
         imode_emoji_vector = model.wv[text]
     except:
-        imode_emoji_vector = imode_emoji_to_vector2(tokenize(text))
+        imode_emoji_vector = imode_emoji_to_vector2(tokenize(text)[0])
     return imode_emoji_vector
 
 # iモード絵文字からベクトル２回目
-def imode_emoji_to_vector2(text):  
+def imode_emoji_to_vector2(text):
+
     try:
         imode_emoji_vector = model.wv[text]
     except:
@@ -137,7 +139,7 @@ def emoji_to_text_lists(emoji):
 
 def pre_preccesing():
 
-    pre_proccesing_lists = ["モバQ"]
+    pre_proccesing_lists = ["モバＱ","fax to","iモード（枠付き）","iモード","がく～（落胆した顔）"]
 
     return pre_proccesing_lists
 
@@ -154,12 +156,13 @@ def emoji_to_imode_emoji(emoji):
         imode_emoji_lists.append(os.path.splitext(os.path.basename(imode_emoji_file_path))[0])
 
     remove_lists = pre_preccesing()
-    
+    # リストから削除
     for remove_name in remove_lists:
         imode_emoji_lists.remove(remove_name)
 
     for imode_emoji_name in imode_emoji_lists:
-        imode_emoji_vector = emoji_to_vector(imode_emoji_name)        
+        # print(imode_emoji_name)
+        imode_emoji_vector = imode_emoji_to_vector(imode_emoji_name)        
         simi_rate = cos_sim(emoji_vector,imode_emoji_vector)
         if max_simi_rate < simi_rate:
             max_simi_rate = simi_rate
