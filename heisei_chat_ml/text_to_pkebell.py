@@ -198,7 +198,7 @@ def text_to_dic(text):
     text_dic["text"] =ret_text
     textlist.append(text_dic)
      
-     return textlist
+    return textlist
 
 def get_emoji_to_imode_emoji():
     emoji_lists = []
