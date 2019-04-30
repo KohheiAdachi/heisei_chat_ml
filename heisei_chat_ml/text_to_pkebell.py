@@ -22,6 +22,16 @@ emoji_json = json.load(emoji_json_file)
 # imode_emojiの読み込み
 imode_emoji_paths = glob("imode_emoji_data/*")
 
+imode_emoji_lists = []
+# ファイルパスから名前だけのリストを作成する
+for imode_emoji_file_path in imode_emoji_paths:
+    imode_emoji_lists.append(os.path.splitext(os.path.basename(imode_emoji_file_path))[0])
+
+remove_lists = ["モバＱ","fax to","iモード（枠付き）","iモード","がく～（落胆した顔）"]
+# リストから削除
+for remove_name in remove_lists:
+    imode_emoji_lists.remove(remove_name)
+
 
 def tokenize(doc):
     mecab = MeCab.Tagger("-Ochasen")
@@ -137,11 +147,11 @@ def emoji_to_text_lists(emoji):
     text_lists = emoji_json[emoji]["keywords"]
     return text_lists
 
-def pre_preccesing():
+# def pre_preccesing():
 
-    pre_proccesing_lists = ["モバＱ","fax to","iモード（枠付き）","iモード","がく～（落胆した顔）"]
+#     pre_proccesing_lists = ["モバＱ","fax to","iモード（枠付き）","iモード","がく～（落胆した顔）"]
 
-    return pre_proccesing_lists
+#     return pre_proccesing_lists
 
 
 
@@ -149,16 +159,6 @@ def emoji_to_imode_emoji(emoji):
     max_simi_rate = 0
     max_simi_word = ""
     emoji_vector = emoji_to_vector(emoji_to_text_lists(emoji))
-
-    imode_emoji_lists = []
-    # ファイルパスから名前だけのリストを作成する
-    for imode_emoji_file_path in imode_emoji_paths:
-        imode_emoji_lists.append(os.path.splitext(os.path.basename(imode_emoji_file_path))[0])
-
-    remove_lists = pre_preccesing()
-    # リストから削除
-    for remove_name in remove_lists:
-        imode_emoji_lists.remove(remove_name)
 
     for imode_emoji_name in imode_emoji_lists:
         # print(imode_emoji_name)
