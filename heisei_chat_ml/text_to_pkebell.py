@@ -181,24 +181,34 @@ def emoji_text_to_imode_text(text):
 
 def text_to_dic(text):
     ret_text = ""
+    ret_text = ""
+    id_num = 0
     textlist = []
-    text_dic = {}
     for c in text:
         if c in emoji.UNICODE_EMOJI:
             # text = text.replace(c,"hoge")
             # textlist.append(ret_text)
             # textlist.append(c)
+            if ret_text != "":
+                text_dic = {}
+                text_dic["id"] = id_num
+                text_dic["text"] = ret_text
+                id_num += 1
+                textlist.append(text_dic)
             text_dic = {}
-            text_dic["text"] = ret_text
+            text_dic["id"] = id_num
             text_dic["emoji"] = emoji_to_imode_emoji(c)
+            id_num += 1
             textlist.append(text_dic)
             ret_text = ""
         else:
             ret_text += c
-    text_dic = {}
-    text_dic["text"] = ret_text
-    textlist.append(text_dic)
-
+    if ret_text != "":
+        text_dic = {}
+        text_dic["id"] = id_num
+        text_dic["text"] = ret_text
+        textlist.append(text_dic)
+        id_num += 1
     return textlist
 
 
