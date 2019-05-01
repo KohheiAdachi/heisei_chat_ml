@@ -55,9 +55,10 @@ print(word_number)
 
 #### iモード絵文字
 
-https://drive.google.com/open?id=1M9Mkcp33UopanwE1VHAwSzRnNiimeFl6
+~~https://drive.google.com/open?id=1M9Mkcp33UopanwE1VHAwSzRnNiimeFl6~~
+~~ここからダウンロードして下さい~~
 
-ここからダウンロードして下さい
+頑張ってゲットしてね
 
 ### パス設定
 
